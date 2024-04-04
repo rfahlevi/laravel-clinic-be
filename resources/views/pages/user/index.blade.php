@@ -14,7 +14,7 @@
                 <h1>User</h1>
             </div>
             <div class="section-body">
-                @if(session()->has('success'))
+                @if (session()->has('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {{ session()->get('success') }}
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -37,11 +37,13 @@
                                 <h4>Data User</h4>
                                 <div class="card-header-form">
                                     <form>
-                                        <div class="input-group">
+                                        <div class="input-group d-flex align-items-center">
                                             <input type="text" name="name_search" class="form-control"
-                                                placeholder="Cari User" value="{{old('search_name')}}">
+                                                placeholder="Cari User" value="{{ old('search_name') }}">
                                             <div class="input-group-btn">
-                                                <button class="btn btn-primary"><i class="fas fa-magnifying-glass"></i></button>
+                                                <button class="btn btn-icon btn-primary py-2">
+                                                    <i class="fas fa-magnifying-glass"></i>
+                                                </button>
                                             </div>
                                         </div>
                                     </form>
@@ -50,7 +52,7 @@
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table-bordered table-md table">
-                                        <tr>
+                                        <tr class="text-center">
                                             <th>#</th>
                                             <th>Name</th>
                                             <th>Email</th>
@@ -61,20 +63,23 @@
                                         </tr>
                                         @foreach ($users as $user)
                                             <tr>
-                                                <td>{{ $users->firstItem() + $loop->index }}</td>
-                                                <td>{{ $user->name }}</td>
-                                                <td>{{ $user->email }}</td>
-                                                <td>{{ $user->phone }}</td>
-                                                <td>{{ $user->role }}</td>
-                                                <td>{{ $user->created_at }}</td>
-                                                <td>
-                                                    <a href="{{route('user.edit', $user->id)}}" class="btn btn-outline-secondary btn-sm">Edit</a>
-                                                    <a href="" data-toggle="modal" onclick="deleteUser('{{$user->id}}')" class="btn btn-outline-danger btn-sm">Hapus</a>
-{{--                                                    <form action="{{route('user.destroy', $user->id)}}" method="post" class="d-inline">--}}
-{{--                                                        <input type="hidden" name="_method" value="DELETE">--}}
-{{--                                                        <input type="hidden" name="_token" value="{{csrf_token()}}">--}}
-{{--                                                        <button class="btn btn-outline-danger btn-sm confirm-delete">Hapus</button>--}}
-{{--                                                    </form>--}}
+                                                <td class="align-middle text-center">
+                                                    {{ $users->firstItem() + $loop->index }}</td>
+                                                <td class="align-middle">{{ $user->name }}</td>
+                                                <td class="align-middle">{{ $user->email }}</td>
+                                                <td class="align-middle">{{ $user->phone }}</td>
+                                                <td class="align-middle">{{ $user->role }}</td>
+                                                <td class="align-middle">{{ $user->created_at }}</td>
+                                                <td class="align-middle text-center">
+                                                    <a href="{{ route('user.edit', $user->id) }}"
+                                                        class="btn btn-outline-dark btn-icon">
+                                                        <i class="far fa-edit"></i>
+                                                    </a>
+                                                    <a href="" data-toggle="modal"
+                                                        onclick="deleteUser('{{ $user->id }}')"
+                                                        class="btn btn-outline-danger btn-icon">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -82,7 +87,7 @@
                                 </div>
                             </div>
                             <div class="card-footer text-right float-right">
-                                {{$users->withQueryString()->links()}}
+                                {{ $users->withQueryString()->links() }}
                             </div>
                         </div>
                     </div>
@@ -92,20 +97,13 @@
     </div>
 @endsection
 
-{{-- Confirm Delete Modal--}}
-<div class="modal fade"
-     tabindex="-1"
-     role="dialog"
-     id="deleteUserModal">
-    <div class="modal-dialog modal-dialog-centered"
-         role="document">
+{{-- Confirm Delete Modal --}}
+<div class="modal fade" tabindex="-1" role="dialog" id="deleteUserModal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Konfirmasi</h5>
-                <button type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -113,30 +111,27 @@
                 <p>Hapus data user dari database?</p>
             </div>
             <div class="modal-footer bg-whitesmoke br">
-                <button type="button"
-                        class="btn btn-danger"
-                        data-dismiss="modal">Batal</button>
-                <form action="{{route('user.destroy', $user->id)}}" method="post" id="deleteUserForm">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                <form action="{{ route('user.destroy', $user->id) }}" method="post" id="deleteUserForm">
                     <input type="hidden" name="_method" value="DELETE">
-                    <input type="hidden" name="_token" value="{{csrf_token()}}">
-                    <button type="submit"
-                            class="btn btn-secondary">Hapus</button>
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-secondary">Hapus</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-{{-- Confirm Delete Modal--}}
+{{-- Confirm Delete Modal --}}
 
-{{--Delete User Function--}}
+{{-- Delete User Function --}}
 <script>
     function deleteUser(id) {
         $('#deleteUserModal').modal('show');
         $('#deleteUserForm').attr('action', '/user/' + id)
-        $('.delete').on('click', function (){});
+        $('.delete').on('click', function() {});
     }
 </script>
-{{--Delete User Function--}}
+{{-- Delete User Function --}}
 
 @push('scripts')
     <!-- JS Libraies -->

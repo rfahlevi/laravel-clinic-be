@@ -23,7 +23,9 @@ class DoctorFactory extends Factory
             "email" => fake()->email(),
             "photo" => fake()->imageUrl(100, 100, 'person'),
             "address" => fake()->address(),
-            "sip" => fake()->numberBetween(10000000, 99999999)
+            "sip" => fake()->numberBetween(10000000, 99999999),
+            "id_ihs" => fake()->numberBetween(10000000, 99999999),
+            "nik" => fake()->numberBetween(10000000, 99999999)
         ];
     }
 }

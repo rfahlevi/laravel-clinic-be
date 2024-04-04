@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\DoctorScheduleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +25,7 @@ Route::middleware('auth')->group(function () {
         return view('dashboard', ['type_menu' => 'home']);
     })->name('home');
     Route::resource('user', UserController::class);
-    Route::resource('doctors', \App\Http\Controllers\DoctorController::class);
+    Route::resource('doctors', DoctorController::class);
+    Route::resource('schedules', DoctorScheduleController::class);
 });
 
