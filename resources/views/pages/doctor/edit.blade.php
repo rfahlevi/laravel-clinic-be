@@ -19,7 +19,7 @@
             </div>
             <div class="section-body">
                 <h2 class="section-title">Edit Dokter</h2>
-                <p class="section-lead">Lengkapi formulir dibawah untuk mengupdate dokter baru.</p>
+                <p class="section-lead">Lengkapi formulir dibawah untuk mengupdate dokter.</p>
                 <form action="{{ route('doctors.update', $doctor) }}" method="POST" enctype="multipart/form-data"
                     class="needs-validation" novalidate="">
                     @method('PATCH')
@@ -28,7 +28,7 @@
                         <div class="col-8">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4>Formulir Dokter Baru</h4>
+                                    <h4>Formulir Edit Dokter</h4>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
@@ -118,9 +118,7 @@
                                     </div>
                                     <div class="form-group mb-3">
                                         <label>Alamat</label>
-                                        <textarea class="form-control @error('address') is-invalid @enderror" data-height="100" name="address">
-                                            {{ $doctor->address }}
-                                        </textarea>
+                                        <textarea class="form-control @error('address') is-invalid @enderror" data-height="100" name="address">{{ $doctor->address }}</textarea>
                                         @error('address')
                                             <div class="invalid-feedback">
                                                 {{ $message }}

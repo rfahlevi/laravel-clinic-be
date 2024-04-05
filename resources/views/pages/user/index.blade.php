@@ -51,38 +51,42 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table-bordered table-md table">
-                                        <tr class="text-center">
-                                            <th>#</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Role</th>
-                                            <th>Dibuat Pada</th>
-                                            <th></th>
-                                        </tr>
-                                        @foreach ($users as $user)
-                                            <tr>
-                                                <td class="align-middle text-center">
-                                                    {{ $users->firstItem() + $loop->index }}</td>
-                                                <td class="align-middle">{{ $user->name }}</td>
-                                                <td class="align-middle">{{ $user->email }}</td>
-                                                <td class="align-middle">{{ $user->phone }}</td>
-                                                <td class="align-middle">{{ $user->role }}</td>
-                                                <td class="align-middle">{{ $user->created_at }}</td>
-                                                <td class="align-middle text-center">
-                                                    <a href="{{ route('user.edit', $user->id) }}"
-                                                        class="btn btn-outline-dark btn-icon">
-                                                        <i class="far fa-edit"></i>
-                                                    </a>
-                                                    <a href="" data-toggle="modal"
-                                                        onclick="deleteUser('{{ $user->id }}')"
-                                                        class="btn btn-outline-danger btn-icon">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </a>
-                                                </td>
+                                    <table class="table-bordered table-sm table-hover table-striped table">
+                                        <thead>
+                                            <tr class="text-center">
+                                                <th>#</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Phone</th>
+                                                <th>Role</th>
+                                                <th>Dibuat Pada</th>
+                                                <th></th>
                                             </tr>
-                                        @endforeach
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($users as $user)
+                                                <tr>
+                                                    <td class="align-middle text-center">
+                                                        {{ $users->firstItem() + $loop->index }}</td>
+                                                    <td class="align-middle">{{ $user->name }}</td>
+                                                    <td class="align-middle">{{ $user->email }}</td>
+                                                    <td class="align-middle">{{ $user->phone }}</td>
+                                                    <td class="align-middle">{{ $user->role }}</td>
+                                                    <td class="align-middle">{{ $user->created_at }}</td>
+                                                    <td class="align-middle text-center">
+                                                        <a href="{{ route('user.edit', $user->id) }}"
+                                                            class="btn btn-outline-dark btn-icon">
+                                                            <i class="far fa-edit"></i>
+                                                        </a>
+                                                        <a href="" data-toggle="modal"
+                                                            onclick="deleteUser('{{ $user->id }}')"
+                                                            class="btn btn-outline-danger btn-icon">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
@@ -112,7 +116,7 @@
             </div>
             <div class="modal-footer bg-whitesmoke br">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-                <form action="{{ route('user.destroy', $user->id) }}" method="post" id="deleteUserForm">
+                <form action="{{ route('user.destroy', $user->id ?? '') }}" method="post" id="deleteUserForm">
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <button type="submit" class="btn btn-secondary">Hapus</button>

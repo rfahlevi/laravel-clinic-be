@@ -61,6 +61,8 @@ class DoctorController extends Controller
         $doctor->photo = $request->photo == null ? null : $request->photo->hashName();
         $doctor->name = $request->name;
         $doctor->sip = $request->sip;
+        $doctor->id_ihs = $request->id_ihs;
+        $doctor->nik = $request->nik;
         $doctor->specialization = $request->specialization;
         $doctor->phone = $request->phone;
         $doctor->email = $request->email;

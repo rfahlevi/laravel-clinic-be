@@ -17,7 +17,7 @@ class DoctorFactory extends Factory
     public function definition(): array
     {
         return [
-            "name" => fake()->name(),
+            "name" => fake()->unique()->name(),
             "specialization" => fake()->word(),
             "phone" => fake()->phoneNumber(),
             "email" => fake()->email(),

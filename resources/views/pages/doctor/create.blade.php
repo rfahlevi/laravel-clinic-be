@@ -44,7 +44,7 @@
                                     <div class="form-group">
                                         <label>SIP</label>
                                         <input type="text" name="sip" value="{{ old('sip') }}"
-                                            class="form-control @error('name') is-invalid @enderror">
+                                            class="form-control @error('sip') is-invalid @enderror">
                                         @error('sip')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -54,7 +54,7 @@
                                     <div class="form-group">
                                         <label>ID IHS</label>
                                         <input type="text" name="id_ihs" value="{{ old('id_ihs') }}"
-                                            class="form-control @error('name') is-invalid @enderror">
+                                            class="form-control @error('id_ihs') is-invalid @enderror">
                                         @error('id_ihs')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -118,7 +118,7 @@
                                     <div class="form-group mb-3">
                                         <label>Alamat</label>
                                         <textarea class="form-control @error('address') is-invalid @enderror" data-height="150" name="address"
-                                            data-val="{{ old('address') }}" required=""></textarea>
+                                            data-val="{{ old('address') }}" required="">{{ old('address') }}</textarea>
                                         @error('address')
                                             <div class="invalid-feedback">
                                                 {{ $message }}

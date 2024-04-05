@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dokter')
+@section('title', 'Jadwal Praktik')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -11,7 +11,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Dokter</h1>
+                <h1>Jadwal Praktik</h1>
             </div>
             <div class="section-body">
                 @if (session()->has('success'))
@@ -22,24 +22,25 @@
                         </button>
                     </div>
                 @endif
-                <h2 class="section-title">Dokter</h2>
-                <p class="section-lead">Anda bisa mengelola semua dokter, seperti mengubah, menghapus dan yang lainnya.</p>
+                <h2 class="section-title">Jadwal Praktik</h2>
+                <p class="section-lead">Anda bisa mengelola semua jadwal praktik, seperti mengubah, menghapus dan yang
+                    lainnya.</p>
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="section-header-button pl-4 pt-4">
-                                <a href="{{ route('doctors.create') }}" class="btn btn-primary">
+                                <a href="{{ route('schedules.create') }}" class="btn btn-primary">
                                     <i class="fas fa-plus"></i>
-                                    Tambah Dokter
+                                    Tambah Jadwal
                                 </a>
                             </div>
                             <div class="card-header">
-                                <h4>Data Dokter</h4>
+                                <h4>Data Jadwal Praktik</h4>
                                 <div class="card-header-form">
                                     <form>
                                         <div class="input-group d-flex align-items-center">
                                             <input type="text" name="name" class="form-control"
-                                                placeholder="Cari Dokter" value="{{ old('name') }}">
+                                                placeholder="Cari Jadwal" value="{{ Request::get('name') }}">
                                             <div class="input-group-btn">
                                                 <button class="btn btn-icon btn-primary py-2">
                                                     <i class="fas fa-magnifying-glass"></i>
@@ -50,50 +51,69 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                @if (count($doctors) == 0)
+                                @if (count($schedules) == 0)
                                     <div class="w-full d-flex p-0 justify-content-center align-items-center"
                                         style="height: 100px">
-                                        <h5>Oopss, Data Dokter Kosong...</h5>
+                                        <h5>Oopss, Data Jadwal Praktik Kosong...</h5>
                                     </div>
                                 @else
                                     <div class="table-responsive">
-                                        <table class="table-bordered table-sm table-striped table-hover table">
+                                        <table class="table table-bordered table-sm table-hover table-striped">
                                             <thead>
                                                 <tr class="text-center">
-                                                    <th>#</th>
-                                                    <th>Foto</th>
-                                                    <th>SIP</th>
-                                                    <th>ID IHS</th>
-                                                    <th>NIK</th>
-                                                    <th>Nama</th>
-                                                    <th>Spesialis</th>
-                                                    <th>No Telepon</th>
-                                                    <th></th>
+                                                    <th rowspan="2" class="align-middle">#</th>
+                                                    <th rowspan="2" class="align-middle">SIP</th>
+                                                    <th rowspan="2" class="align-middle">Dokter</th>
+                                                    <th colspan="2" class="align-middle">Jadwal</th>
+                                                    <th rowspan="2" class="align-middle">Status</th>
+                                                    <th rowspan="2" class="align-middle">Note</th>
+                                                    <th rowspan="2" class="align-middle"></th>
+                                                </tr>
+                                                <tr class="text-center">
+                                                    <th>Hari</th>
+                                                    <th>Jam</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($doctors as $doctor)
+                                                @foreach ($schedules as $schedule)
                                                     <tr>
                                                         <td class="text-center align-middle">
-                                                            {{ $doctors->firstItem() + $loop->index }}</td>
-                                                        <td><img class="rounded"
-                                                                src="{{ str_contains($doctor->photo, 'http') ? $doctor->photo : url("/storage/doctors/$doctor->photo") }}"
-                                                                width="70" height="70" alt="{{ $doctor->name }}">
+                                                            {{ $schedules->firstItem() + $loop->index }}</td>
+                                                        <td class="align-middle text-center">
+                                                            {{ $schedule->doctor_sip }}
                                                         </td>
-                                                        <td class="align-middle">{{ $doctor->sip }}</td>
-                                                        <td class="align-middle">{{ $doctor->id_ihs }}</td>
-                                                        <td class="align-middle">{{ $doctor->nik }}</td>
-                                                        <td class="align-middle">{{ $doctor->name }}</td>
-                                                        <td class="align-middle">{{ $doctor->specialization }}</td>
-                                                        <td class="align-middle">{{ $doctor->phone }}</td>
                                                         <td class="align-middle">
-                                                            <div class="d-flex">
-                                                                <a href="{{ route('doctors.edit', $doctor->id) }}"
+                                                            {{ $schedule->doctor_name }},
+                                                            {{ $schedule->doctor_specialization }}
+                                                        </td>
+                                                        <td class="align-middle text-center">
+                                                            {{ $schedule->day }}
+                                                        </td>
+                                                        <td class="align-middle text-center">
+                                                            {{ $schedule->start }} - {{ $schedule->end }}
+                                                        </td>
+                                                        <td class="text-center align-middle">
+                                                            <div
+                                                                class="badge badge-pill text-small @if ($schedule->status == 'Aktif') badge-success @else badge-danger @endif">
+                                                                {{ $schedule->status }}
+                                                            </div>
+                                                        </td>
+                                                        <td class="align-middle justify-content-center d-flex">
+                                                            <button type="button" class="btn btn-outline-info"
+                                                                data-container="body" data-toggle="popover"
+                                                                data-placement="top" data-content="{{ $schedule->note }}"
+                                                                data-trigger="focus">
+                                                                <i class="fas fa-clipboard"></i>
+                                                            </button>
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <div class="d-flex justify-content-center">
+                                                                <a href="{{ route('schedules.edit', $schedule->id) }}"
                                                                     class="btn btn-icon btn-outline-dark mr-2">
                                                                     <i class="far fa-edit"></i>
                                                                 </a>
                                                                 <a href="" data-toggle="modal"
-                                                                    onclick="deleteDoctor('{{ $doctor->id }}')"
+                                                                    onclick="deleteDoctor('{{ $schedule->id }}')"
                                                                     class="btn btn-icon btn-outline-danger">
                                                                     <i class="fas fa-trash-alt"></i>
                                                                 </a>
@@ -107,7 +127,7 @@
                                 @endif
                             </div>
                             <div class="card-footer d-flex justify-content-end">
-                                {{ $doctors->withQueryString()->links() }}
+                                {{ $schedules->withQueryString()->links() }}
                             </div>
                         </div>
                     </div>
@@ -118,7 +138,7 @@
 @endsection
 
 {{-- Confirm Delete Modal --}}
-<div class="modal fade" tabindex="-1" role="dialog" id="deleteDoctorModal">
+<div class="modal fade" tabindex="-1" role="dialog" id="deleteScheduleModal">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -128,11 +148,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Hapus data dokter dari database?</p>
+                <p>Hapus data jadwal dari database?</p>
             </div>
             <div class="modal-footer bg-whitesmoke br">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-                <form action="{{ route('doctors.destroy', $doctor->id ?? '') }}" method="post" id="deleteDoctorForm">
+                <form action="{{ route('schedules.destroy', $schedule->id ?? '') }}" method="post"
+                    id="deleteScheduleForm">
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <button type="submit" class="btn btn-secondary">Hapus</button>
@@ -146,8 +167,8 @@
 {{-- Delete User Function --}}
 <script>
     function deleteDoctor(id) {
-        $('#deleteDoctorModal').modal('show');
-        $('#deleteDoctorForm').attr('action', '/doctors/' + id)
+        $('#deleteScheduleModal').modal('show');
+        $('#deleteScheduleForm').attr('action', '/schedules/' + id)
         $('.delete').on('click', function() {});
     }
 </script>

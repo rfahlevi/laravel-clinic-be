@@ -16,7 +16,13 @@
                 <a href="{{ route('user.index') }}" class="nav-link"><i class="fas fa-user"></i><span>User</span></a>
             </li>
             <li class="nav-item {{ $type_menu == 'doctor' ? 'active' : '' }}">
-                <a href="{{route('doctors.index')}}" class="nav-link"><i class="fas fa-user-doctor"></i><span>Dokter</span></a>
+                <a href="{{ route('doctors.index') }}" class="nav-link"><i
+                        class="fas fa-user-doctor"></i><span>Dokter</span></a>
+            </li>
+            <li class="nav-item {{ $type_menu == 'schedule' ? 'active' : '' }}">
+                <a href="{{ route('schedules.index') }}" class="nav-link"><i
+                        class="fas fa-calendar-day"></i><span>Jadwal
+                        Praktik</span></a>
             </li>
     </aside>
 </div>
