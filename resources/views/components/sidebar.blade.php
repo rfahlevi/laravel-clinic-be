@@ -24,5 +24,11 @@
                         class="fas fa-calendar-day"></i><span>Jadwal
                         Praktik</span></a>
             </li>
+            <li class="nav-item {{ $type_menu == 'patient' ? 'active' : '' }}">
+                <a href="{{ route('patients.index') }}" class="nav-link">
+                    <i class="fas fa-hospital-user"></i>
+                    <span>Pasien</span>
+                </a>
+            </li>
     </aside>
 </div>

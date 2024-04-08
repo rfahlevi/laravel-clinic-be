@@ -2,11 +2,6 @@
 
 @section('title', 'Jadwal Praktik')
 
-@push('style')
-    <!-- CSS Libraries -->
-    <link rel="stylesheet" href="{{ asset('library/selectric/public/selectric.css') }}">
-@endpush
-
 @section('main')
     <div class="main-content">
         <section class="section">
@@ -173,11 +168,3 @@
     }
 </script>
 {{-- Delete User Function --}}
-
-@push('scripts')
-    <!-- JS Libraies -->
-    <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
-
-    <!-- Page Specific JS File -->
-    <script src="{{ asset('js/page/features-posts.js') }}"></script>
-@endpush

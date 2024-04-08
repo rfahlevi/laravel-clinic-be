@@ -76,7 +76,7 @@
                                                     <tr>
                                                         <td class="text-center align-middle">
                                                             {{ $doctors->firstItem() + $loop->index }}</td>
-                                                        <td><img class="rounded"
+                                                        <td class="align-middle text-center"><img class="rounded"
                                                                 src="{{ str_contains($doctor->photo, 'http') ? $doctor->photo : url("/storage/doctors/$doctor->photo") }}"
                                                                 width="70" height="70" alt="{{ $doctor->name }}">
                                                         </td>
