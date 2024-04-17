@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\DoctorController;
 use App\Http\Controllers\Api\PatientController;
+use App\Http\Controllers\Api\DoctorScheduleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,3 +27,4 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 Route::apiResource('api-doctors', DoctorController::class)->middleware('auth:sanctum');
 Route::apiResource('api-patients', PatientController::class)->middleware('auth:sanctum');
+Route::apiResource('api-doctor-schedules', DoctorScheduleController::class)->middleware('auth:sanctum');

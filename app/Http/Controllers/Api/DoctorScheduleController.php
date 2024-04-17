@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Models\Doctor;
 use Illuminate\Http\Request;
 use App\Models\DoctorSchedule;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\DoctorScheduleResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DoctorScheduleController extends Controller
 {
@@ -25,22 +26,17 @@ class DoctorScheduleController extends Controller
             ->orderBy('name')
             ->paginate(10);
 
-        return view('pages.doctor_schedule.index', [
-            'type_menu' => 'schedule',
-            'schedules' => $schedules,
-        ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        $doctors = Doctor::orderBy('name')->get();
-        return view('pages.doctor_schedule.create', [
-            'type_menu' => 'schedule',
-            'doctors' => $doctors,
-        ]);
+        return response()->json(
+            [
+                'status' => true,
+                'message' => 'Berhasil mendapatkan data schedule',
+                'data' => DoctorScheduleResource::collection($schedules),
+                'current_page' => $schedules->currentPage(),
+                'last_page' => $schedules->lastPage(),
+                'total' => $schedules->total(),
+            ],
+            200,
+        );
     }
 
     /**
@@ -87,14 +83,26 @@ class DoctorScheduleController extends Controller
         $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator->messages())->withInput();
+            return response()->json(
+                [
+                    'status' => false,
+                    'message' => $validator->errors()->first(),
+                ],
+                422,
+            );
         }
 
         if (!empty($request->doctor_id) && empty($request->senin_start) && empty($request->senin_end) && empty($request->selasa_start) && empty($request->selasa_end) && empty($request->rabu_start) && empty($request->rabu_end) && empty($request->kamis_start) && empty($request->kamis_end) && empty($request->jumat_start) && empty($request->jumat_end) && empty($request->sabtu_start) && empty($request->sabtu_end) && empty($request->minggu_start) && empty($request->minggu_end)) {
-            return redirect()->back()->withErrors('Minimal 1 jadwal harus diisi')->withInput();
+            return response()->json(
+                [
+                    'status' => false,
+                    'message' => 'Minimal 1 jadwal harus diisi',
+                ],
+                400,
+            );
         }
 
-        if($request->senin_start && $request->senin_end) {
+        if ($request->senin_start && $request->senin_end) {
             $schedule = new DoctorSchedule();
             $schedule->doctor_id = $request->doctor_id;
             $schedule->start = $request->senin_start;
@@ -105,7 +113,7 @@ class DoctorScheduleController extends Controller
             $schedule->save();
         }
 
-         if($request->selasa_start && $request->selasa_end) {
+        if ($request->selasa_start && $request->selasa_end) {
             $schedule = new DoctorSchedule();
             $schedule->doctor_id = $request->doctor_id;
             $schedule->start = $request->selasa_start;
@@ -116,7 +124,7 @@ class DoctorScheduleController extends Controller
             $schedule->save();
         }
 
-         if($request->rabu_start && $request->rabu_end) {
+        if ($request->rabu_start && $request->rabu_end) {
             $schedule = new DoctorSchedule();
             $schedule->doctor_id = $request->doctor_id;
             $schedule->start = $request->rabu_start;
@@ -127,7 +135,7 @@ class DoctorScheduleController extends Controller
             $schedule->save();
         }
 
-         if($request->kamis_start && $request->kamis_end) {
+        if ($request->kamis_start && $request->kamis_end) {
             $schedule = new DoctorSchedule();
             $schedule->doctor_id = $request->doctor_id;
             $schedule->start = $request->kamis_start;
@@ -138,7 +146,7 @@ class DoctorScheduleController extends Controller
             $schedule->save();
         }
 
-         if($request->jumat_start && $request->jumat_end) {
+        if ($request->jumat_start && $request->jumat_end) {
             $schedule = new DoctorSchedule();
             $schedule->doctor_id = $request->doctor_id;
             $schedule->start = $request->jumat_start;
@@ -149,7 +157,7 @@ class DoctorScheduleController extends Controller
             $schedule->save();
         }
 
-         if($request->sabtu_start && $request->sabtu_end) {
+        if ($request->sabtu_start && $request->sabtu_end) {
             $schedule = new DoctorSchedule();
             $schedule->doctor_id = $request->doctor_id;
             $schedule->start = $request->sabtu_start;
@@ -160,7 +168,7 @@ class DoctorScheduleController extends Controller
             $schedule->save();
         }
 
-         if($request->minggu_start && $request->minggu_end) {
+        if ($request->minggu_start && $request->minggu_end) {
             $schedule = new DoctorSchedule();
             $schedule->doctor_id = $request->doctor_id;
             $schedule->start = $request->minggu_start;
@@ -171,77 +179,111 @@ class DoctorScheduleController extends Controller
             $schedule->save();
         }
 
-        return redirect(route('schedules.index'))->with('success', 'Berhasil menambahkan jadwal');
-    }
+        // Untuk test Postman
+        //  $schedule = new DoctorSchedule();
+        //     $schedule->doctor_id = $request->doctor_id;
+        //     $schedule->start = $request->start;
+        //     $schedule->end = $request->end;
+        //     $schedule->day = 'Minggu';
+        //     $schedule->status = $request->status;
+        //     $schedule->note = $request->note;
+        //     $schedule->save();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        $schedule = DoctorSchedule::findOrFail($id);
-        $doctors = Doctor::orderBy('name')->get();
-        return view('pages.doctor_schedule.edit', [
-            'type_menu' => 'schedule',
-            'schedule' => $schedule,
-            'doctors' => $doctors,
-        ]);
+        return response()->json(
+            [
+                'status' => true,
+                'message' => 'Berhasil membuat jadwal dokter',
+                'data' => new DoctorScheduleResource($schedule),
+            ],
+            201,
+        );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
-        $schedule = DoctorSchedule::findOrFail($id);
+        try {
+            $schedule = DoctorSchedule::findOrFail($id);
 
-        $rules = [
-            'doctor_id' => 'required',
-            'start' => 'required',
-            'end' => 'required',
-            'status' => 'required',
-        ];
+            $rules = [
+                'doctor_id' => 'required',
+                'start' => 'required',
+                'end' => 'required',
+                'status' => 'required',
+            ];
 
-        $messages = [
-            'doctor_id.required' => 'Pilih dokter terlebih dahulu',
-            'start.required' => 'Waktu mulai harus diisi',
-            'end.required' => 'Waktu selesai harus diisi',
-            'status.required' => 'Status harus dipilih',
-        ];
+            $messages = [
+                'doctor_id.required' => 'Pilih dokter terlebih dahulu',
+                'start.required' => 'Waktu mulai harus diisi',
+                'end.required' => 'Waktu selesai harus diisi',
+                'status.required' => 'Status harus dipilih',
+            ];
 
-        $validator = Validator::make($request->all(), $rules, $messages);
+            $validator = Validator::make($request->all(), $rules, $messages);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator->messages())->withInput();
+            if ($validator->fails()) {
+                return response()->json(
+                    [
+                        'status' => false,
+                        'message' => $validator->messages()->first(),
+                    ],
+                    422,
+                );
+            }
+
+            $schedule->doctor_id = $request->doctor_id;
+            $schedule->start = trim($request->start);
+            $schedule->end = trim($request->end);
+            $schedule->day = trim($schedule->day);
+            $schedule->status = trim($request->status);
+            $schedule->note = trim($request->note);
+            $schedule->save();
+
+            return response()->json(
+                [
+                    'status' => true,
+                    'message' => 'Berhasil mengupdate jadwal dokter',
+                    'data' => new DoctorScheduleResource($schedule),
+                ],
+                200,
+            );
+        } catch (ModelNotFoundException $error) {
+            return response()->json(
+                [
+                    'status' => false,
+                    'message' => 'Data schedule tidak ditemukan',
+                ],
+                404,
+            );
         }
-
-        $schedule->doctor_id = $request->doctor_id;
-        $schedule->start = trim($request->start);
-        $schedule->end = trim($request->end);
-        $schedule->day = trim($schedule->day);
-        $schedule->status = trim($request->status);
-        $schedule->note = trim($request->note);
-        $schedule->save();
-
-        return redirect(route('schedules.index'))->with('success', 'Berhasil mengubah jadwal');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(string $id)
     {
-        $schedule = DoctorSchedule::findOrFail($id);
-        $schedule->delete();
+        try {
+            $schedule = DoctorSchedule::findOrFail($id);
+            $schedule->delete();
 
-        return redirect(route('schedules.index'))->with('success', 'Berhasil mengahapus jadwal');
+            return response()->json(
+                [
+                    'status' => true,
+                    'message' => 'Berhasil mengahapus jadwal dokter',
+                ],
+                200,
+            );
+        } catch (ModelNotFoundException $err) {
+            return response()->json(
+                [
+                    'status' => false,
+                    'message' => 'Data schedule tidak ditemukan',
+                ],
+                404,
+            );
+        }
     }
 }
