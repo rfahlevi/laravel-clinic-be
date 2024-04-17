@@ -82,6 +82,7 @@ class DoctorController extends Controller
                     'status' => false,
                     'message' => $validator->messages()->first(),
                 ],
+                422
             );
         }
 
@@ -190,7 +191,7 @@ class DoctorController extends Controller
                 ],
                 200,
             );
-        } catch (ModuleNotFoundException $error) {
+        } catch (ModelNotFoundException $error) {
             return response()->json(
                 [
                     'status' => false,
