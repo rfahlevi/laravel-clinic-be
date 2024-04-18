@@ -44,7 +44,7 @@ class PatientFactory extends Factory
             'nik' => fake()->randomNumber(8, true),
             'no_kk' => fake()->randomNumber(8, true),
             'name' => fake()->name(),
-            'phone' => fake()->phoneNumber(),
+            "phone" => fake()->numberBetween(81000000000, 81999999999),
             'email' => fake()->email(),
             'gender' => fake()->randomElement(['Pria', 'Wanita']),
             'birth_place' => fake()->city(),

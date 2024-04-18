@@ -8,6 +8,7 @@ use Illuminate\Database\Seeder;
 use Database\Seeders\DoctorSeeder;
 use Database\Seeders\PatientSeeder;
 use Illuminate\Support\Facades\Hash;
+use Database\Seeders\ClinicServiceSeeder;
 use Database\Seeders\DoctorScheduleSeeder;
 
 class DatabaseSeeder extends Seeder
@@ -21,8 +22,9 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ClinicProfileSeeder::class,
             DoctorSeeder::class,
-            // DoctorScheduleSeeder::class,
+            DoctorScheduleSeeder::class,
             PatientSeeder::class,
+            ClinicServiceSeeder::class,
         ]);
     }
 }

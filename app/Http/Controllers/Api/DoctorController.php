@@ -20,7 +20,7 @@ class DoctorController extends Controller
         $doctors = Doctor::when($request->input('name'), function ($query, $name) {
             return $query->where('name', 'like', '%' . $name . '%');
         })
-            ->orderBy('id', 'desc')
+            ->orderBy('name')
             ->paginate(10);
 
         return response()->json(
