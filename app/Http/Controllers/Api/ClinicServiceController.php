@@ -20,15 +20,12 @@ class ClinicServiceController extends Controller
             return $query->where('name', 'like', '%' . $name . '%');
         })
             ->orderBy('name')
-            ->paginate(10);
+            ->get();
         
             return response()->json([
                 'status' => true,
                 'message' => 'Berhasil mendapatkan data layanan klinik',
                 'data' => ClinicServiceResource::collection($services),
-                'current_page' => $services->currentPage(),
-                'last_page' => $services->lastPage(),
-                'total' => $services->total(),
             ], 200);
     }
 

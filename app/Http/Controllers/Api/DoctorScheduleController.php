@@ -24,16 +24,13 @@ class DoctorScheduleController extends Controller
                 return $query->where('d.name', 'like', '%' . $name . '%');
             })
             ->orderBy('name')
-            ->paginate(10);
+            ->get();
 
         return response()->json(
             [
                 'status' => true,
                 'message' => 'Berhasil mendapatkan data schedule',
                 'data' => DoctorScheduleResource::collection($schedules),
-                'current_page' => $schedules->currentPage(),
-                'last_page' => $schedules->lastPage(),
-                'total' => $schedules->total(),
             ],
             200,
         );
