@@ -30,5 +30,11 @@
                     <span>Pasien</span>
                 </a>
             </li>
+            <li class="nav-item {{ $type_menu == 'clinic_service' ? 'active' : '' }}">
+                <a href="{{ route('clinic-services.index') }}" class="nav-link">
+                    <i class="fas fa-hospital-alt"></i>
+                    <span>Layanan Klinik</span>
+                </a>
+            </li>
     </aside>
 </div>
