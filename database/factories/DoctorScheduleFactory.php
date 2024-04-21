@@ -17,7 +17,7 @@ class DoctorScheduleFactory extends Factory
     public function definition(): array
     {
         return [
-            'doctor_id' => fake()->numberBetween(1, 20),
+            'doctor_id' => fake()->numberBetween(1, 10),
             'day' => fake()->randomElement(['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu']),
             'start' => fake()->time('H:i'),
             'end' => fake()->time('H:i'),

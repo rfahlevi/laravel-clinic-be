@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\DoctorController;
 use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\Api\ClinicServiceController;
 use App\Http\Controllers\Api\DoctorScheduleController;
+use App\Http\Controllers\Api\PatientReservationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,3 +31,4 @@ Route::apiResource('api-doctors', DoctorController::class)->middleware('auth:san
 Route::apiResource('api-patients', PatientController::class)->middleware('auth:sanctum');
 Route::apiResource('api-doctor-schedules', DoctorScheduleController::class)->middleware('auth:sanctum');
 Route::apiResource('api-clinic-services', ClinicServiceController::class)->middleware('auth:sanctum');
+Route::apiResource('api-patient-reservations', PatientReservationController::class)->middleware('auth:sanctum');
