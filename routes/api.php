@@ -7,7 +7,10 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\DoctorController;
 use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\Api\ClinicServiceController;
+use App\Http\Controllers\Api\MedicalRecordController;
+use App\Http\Controllers\Api\PaymentDetailController;
 use App\Http\Controllers\Api\DoctorScheduleController;
+use App\Http\Controllers\Api\SatuSehatTokenController;
 use App\Http\Controllers\Api\PatientReservationController;
 
 /*
@@ -27,8 +30,30 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+
+// Api Doctors
 Route::apiResource('api-doctors', DoctorController::class)->middleware('auth:sanctum');
+
+// Api Patients
 Route::apiResource('api-patients', PatientController::class)->middleware('auth:sanctum');
+
+// Api Doctor Schedules
 Route::apiResource('api-doctor-schedules', DoctorScheduleController::class)->middleware('auth:sanctum');
+
+// Api Clinic Services
 Route::apiResource('api-clinic-services', ClinicServiceController::class)->middleware('auth:sanctum');
+
+// Api Patient Reservations
 Route::apiResource('api-patient-reservations', PatientReservationController::class)->middleware('auth:sanctum');
+
+// Api Medical Records
+Route::get('api-medical-records', [MedicalRecordController::class, 'index'])->middleware('auth:sanctum');
+Route::get('api-medical-records/{reservationId}', [MedicalRecordController::class, 'getByReservationId'])->middleware('auth:sanctum');
+Route::post('api-medical-records', [MedicalRecordController::class, 'store'])->middleware('auth:sanctum');
+
+// Api Payment Details
+Route::get('api-payment-details', [PaymentDetailController::class, 'index'])->middleware('auth:sanctum');
+Route::post('api-payment-details', [PaymentDetailController::class, 'store'])->middleware('auth:sanctum');
+
+// Satu Sehat
+Route::get('/satusehat-token', [SatuSehatTokenController::class, 'getToken'])->middleware('auth:sanctum');

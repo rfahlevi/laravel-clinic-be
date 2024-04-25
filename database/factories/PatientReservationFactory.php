@@ -17,7 +17,7 @@ class PatientReservationFactory extends Factory
     public function definition(): array
     {
         return [
-            'patient_id' => $this->faker->numberBetween(1, 10),
+            'patient_id' => $this->faker->unique()->randomElement([1,2,3,4,5,6,7,8,9,10]),
             'doctor_id' => $this->faker->numberBetween(1, 10),
             'schedule_time' => $this->faker->dateTimeBetween('now', '+1 week'),
             'complaint' => $this->faker->text(),

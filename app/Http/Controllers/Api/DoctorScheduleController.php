@@ -42,7 +42,7 @@ class DoctorScheduleController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'doctor_id' => 'required',
+            'doctor_id' => 'required|exists:doctors,id',
             'senin_start' => 'required_with:senin_end',
             'senin_end' => 'required_with:senin_start',
             'selasa_start' => 'required_with:selasa_end',
