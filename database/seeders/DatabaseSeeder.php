@@ -25,12 +25,12 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ClinicProfileSeeder::class,
             DoctorSeeder::class,
-            DoctorScheduleSeeder::class,
+            // DoctorScheduleSeeder::class,
             PatientSeeder::class,
-            ClinicServiceSeeder::class,
-            PatientReservationSeeder::class,
-            MedicalRecordSeeder::class,
-            PaymentDetailSeeder::class,
+            // ClinicServiceSeeder::class,
+            // PatientReservationSeeder::class,
+            // MedicalRecordSeeder::class,
+            // PaymentDetailSeeder::class,
         ]);
     }
 }

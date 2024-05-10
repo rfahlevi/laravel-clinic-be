@@ -44,7 +44,9 @@ Route::apiResource('api-doctor-schedules', DoctorScheduleController::class)->mid
 Route::apiResource('api-clinic-services', ClinicServiceController::class)->middleware('auth:sanctum');
 
 // Api Patient Reservations
-Route::apiResource('api-patient-reservations', PatientReservationController::class)->middleware('auth:sanctum');
+Route::get('api-patient-reservations', [PatientReservationController::class, 'index'])->middleware('auth:sanctum');
+Route::post('api-patient-reservations', [PatientReservationController::class, 'store'])->middleware('auth:sanctum');
+Route::post('api-patient-reservations/cancel/{id}', [PatientReservationController::class, 'cancelReservationById'])->middleware('auth:sanctum');
 
 // Api Medical Records
 Route::get('api-medical-records', [MedicalRecordController::class, 'index'])->middleware('auth:sanctum');

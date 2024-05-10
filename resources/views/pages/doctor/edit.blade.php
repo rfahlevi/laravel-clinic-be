@@ -35,10 +35,15 @@
                                         <label>Foto</label>
                                         <div class="input-group mb-3">
                                             <div class="custom-file">
-                                                <label class="custom-file-label" for="inputGroupFile03">Pilih file</label>
+                                                <label class="custom-file-label" for="photo">Pilih file</label>
                                                 <input type="file" name="photo" value="{{ $doctor->photo }}"
                                                     class="custom-file-input @error('photo') is-invalid @enderror"
-                                                    id="inputGroupFile03" aria-describedby="inputGroupFileAddon03">
+                                                    id="photo" aria-describedby="photo">
+                                                @error('photo')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>

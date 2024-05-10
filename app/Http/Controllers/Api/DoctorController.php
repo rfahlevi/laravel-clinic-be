@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\User;
 use App\Models\Doctor;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -21,7 +22,7 @@ class DoctorController extends Controller
             return $query->where('name', 'like', '%' . $name . '%');
         })
             ->orderBy('name')
-            ->paginate(10);
+            ->paginate(50);
 
         return response()->json(
             [
@@ -91,8 +92,18 @@ class DoctorController extends Controller
             $image->storeAs('public/doctors', $image->hashName());
         }
 
+        // Store to user table
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = bcrypt('password');
+        $user->phone = $request->phone;
+        $user->role = 'dokter';
+        $user->save();
+
+        // Store to doctor table
         $doctor = new Doctor();
-        $doctor->photo = $request->photo == null ? null : $request->photo->hashName();
+        $doctor->photo = $request->photo == null ? "https://img.freepik.com/free-vector/hand-drawn-doctor-cartoon-illustration_23-2150696182.jpg?w=1380&t=st=1713247452~exp=1713248052~hmac=9577a7ec13c38b3970158e3ce731b4441ea4f2c5f2bc9ac3fc487377360e4f64" : $request->photo->hashName();
         $doctor->name = $request->name;
         $doctor->sip = $request->sip;
         $doctor->id_ihs = $request->id_ihs;
@@ -172,7 +183,7 @@ class DoctorController extends Controller
                 Storage::delete('public/doctors/' . basename($doctor->photo));
             }
 
-            $doctor->photo = $request->photo == null ? $doctor->photo : $request->photo->hashName();
+            $doctor->photo = $request->photo == null ? "https://img.freepik.com/free-vector/hand-drawn-doctor-cartoon-illustration_23-2150696182.jpg?w=1380&t=st=1713247452~exp=1713248052~hmac=9577a7ec13c38b3970158e3ce731b4441ea4f2c5f2bc9ac3fc487377360e4f64" : $request->photo->hashName();
             $doctor->name = $request->name;
             $doctor->sip = $request->sip;
             $doctor->id_ihs = $request->id_ihs;

@@ -77,7 +77,7 @@
                                                         <td class="text-center align-middle">
                                                             {{ $doctors->firstItem() + $loop->index }}</td>
                                                         <td class="align-middle text-center"><img class="rounded"
-                                                                src="{{ str_contains($doctor->photo, 'http') ? $doctor->photo : url("/storage/doctors/$doctor->photo") }}"
+                                                                src="{{ str_contains($doctor->photo, 'http') === true ? $doctor->photo : 'http://www.laravel-clinic-be.test/storage/doctors/' . $doctor->photo }}"
                                                                 width="70" height="70" alt="{{ $doctor->name }}">
                                                         </td>
                                                         <td class="align-middle">{{ $doctor->sip }}</td>

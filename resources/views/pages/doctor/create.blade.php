@@ -20,7 +20,7 @@
             <div class="section-body">
                 <h2 class="section-title">Tambah Dokter</h2>
                 <p class="section-lead">Lengkapi formulir dibawah untuk menambahkan dokter baru.</p>
-                <form action="{{ route('doctors.store') }}" method="post" enctype="multipart/form-data"
+                <form action="{{ route('doctors.store') }}" method="POST" enctype="multipart/form-data"
                     class="needs-validation" novalidate="">
                     @csrf
                     <div class="row">
@@ -34,10 +34,10 @@
                                         <label>Foto</label>
                                         <div class="input-group mb-3">
                                             <div class="custom-file">
-                                                <label class="custom-file-label" for="inputGroupFile03">Pilih file</label>
+                                                <label class="custom-file-label" for="photo">Pilih file</label>
                                                 <input type="file" name="photo"
                                                     class="custom-file-input @error('photo') is-invalid @enderror"
-                                                    id="inputGroupFile03" aria-describedby="inputGroupFileAddon03">
+                                                    id="photo" aria-describedby="photo">
                                             </div>
                                         </div>
                                     </div>
@@ -119,11 +119,11 @@
                                         <label>Alamat</label>
                                         <textarea class="form-control @error('address') is-invalid @enderror" data-height="150" name="address"
                                             data-val="{{ old('address') }}" required="">{{ old('address') }}</textarea>
-                                        @error('address')
+                                        {{-- @error('address')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
                                             </div>
-                                        @enderror
+                                        @enderror --}}
                                     </div>
                                     <div class="form-group">
                                         <div class="buttons float-right">

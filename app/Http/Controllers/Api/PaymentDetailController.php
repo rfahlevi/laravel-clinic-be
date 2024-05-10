@@ -18,7 +18,7 @@ class PaymentDetailController extends Controller
                     $query->where('name', 'like', '%' . $name . '%')->orWhere('nik', 'like', '%' . $name . '%');
                 });
             })
-            ->orderBy('id')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return response()->json(

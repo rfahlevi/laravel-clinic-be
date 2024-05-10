@@ -17,16 +17,7 @@ class MedicalRecord extends Model
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    /**
-     * Get the patient that owns the MedicalRecord
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function patient(): BelongsTo
-    {
-        return $this->belongsTo(Patient::class, 'patient_id', 'id');
-    }
-
+   
     /**
      * Get the doctor that owns the MedicalRecord
      *

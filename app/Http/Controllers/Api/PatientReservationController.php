@@ -19,7 +19,7 @@ class PatientReservationController extends Controller
         $reservations = DB::table('patient_reservations')
         ->leftJoin('patients as p', 'patient_reservations.patient_id', '=', 'p.id')
         ->leftJoin('doctors as d', 'patient_reservations.doctor_id', '=', 'd.id')
-        ->select('patient_reservations.*', 'p.*', 'd.*');
+        ->select('patient_reservations.*', 'p.id as patient_id', 'd.id as doctor_id');
 
          if (!empty($request->patient)) {
             $reservations = $reservations->where('p.nik', 'like', '%' . $request->patient . '%')
@@ -27,7 +27,7 @@ class PatientReservationController extends Controller
         }
 
         $reservations = $reservations->orderBy('patient_reservations.queue_number')->get();
-
+        
         return response()->json(
             [
                 'status' => true,
@@ -90,27 +90,24 @@ class PatientReservationController extends Controller
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function cancelReservationById($id)
     {
-        //
-    }
+        $reservation = PatientReservation::findOrFail($id);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        if (!$reservation) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Reservasi tidak ditemukan',
+            ], 404);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $reservation->status = 'Batal';
+        $reservation->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Berhasil membatalkan reservasi',
+            'data' => new PatientReservationResource($reservation),
+        ]);
     }
 }

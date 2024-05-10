@@ -16,19 +16,23 @@ class MedicalRecordController extends Controller
      */
     public function index(Request $request)
     {
-        $records = MedicalRecord::with('doctor', 'patient', 'medicalRecordServices', 'patientReservation')
+        $records = MedicalRecord::with('medicalRecordServices', 'patientReservation')
             ->when($request->input('record'), function ($query, $record) {
-                return $query->whereHas('patient', function ($query) use ($record) {
+                return $query->whereHas('patientReservation.patient', function ($query) use ($record) {
                     $query->where('name', 'like', '%' . $record . '%')->orWhere('nik', 'like', '%' . $record . '%');
                 });
             })
-            ->get();
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
 
         return response()->json(
             [
                 'status' => true,
                 'message' => 'Berhasil mendapatkan data Medical Records',
                 'data' => MedicalRecordResource::collection($records),
+                'current_page' => $records->currentPage(),
+                'last_page' => $records->lastPage(),
+                'total' => $records->total(),
             ],
             200,
         );
@@ -40,8 +44,6 @@ class MedicalRecordController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'patient_id' => 'required|exists:patients,id',
-            'doctor_id' => 'required|exists:doctors,id',
             'patient_reservation_id' => 'required|exists:patient_reservations,id',
             'diagnosis' => 'required',
             'medical_treatment' => 'nullable',
@@ -50,15 +52,13 @@ class MedicalRecordController extends Controller
         ];
 
         $messages = [
-            'patient_id.*' => 'Pasien tidak teridentifikasi',
-            'doctor_id.*' => 'Dokter tidak teridentifikasi',
             'patient_reservation_id.*' => 'Reservasi tidak teridentifikasi',
             'diagnosis.required' => 'Diagnosis tidak boleh kosong',
             'medical_record_services.required' => 'Layanan klinik tidak boleh kosong',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
-        
+
         if($validator->fails()) {
             return response()->json([
                 'status' => false,
@@ -71,8 +71,6 @@ class MedicalRecordController extends Controller
 
         // Store Medical Record
         $medicalRecord = MedicalRecord::create([
-            'patient_id' => $validated['patient_id'],
-            'doctor_id' => $validated['doctor_id'],
             'patient_reservation_id' => $validated['patient_reservation_id'],
             'diagnosis' => $validated['diagnosis'],
             'medical_treatment' => $validated['medical_treatment'],
@@ -86,7 +84,7 @@ class MedicalRecordController extends Controller
                 'clinic_service_id' => $service['clinic_service_id'],
                 'qty' => $service['qty'],
             ]);
-            $totalPrice += ClinicService::findOrFail($service['clinic_service_id'])->price;
+            $totalPrice += ClinicService::findOrFail($service['clinic_service_id'])->price * $service['qty'];
         }
 
         // Update Patient Reservation Status
@@ -107,13 +105,13 @@ class MedicalRecordController extends Controller
 
     public function getByReservationId($reservationId)
     {
-        $medicalRecords = MedicalRecord::where('patient_reservation_id', $reservationId)->get();
+        $medicalRecord = MedicalRecord::where('patient_reservation_id', $reservationId)->first();
 
         return response()->json(
             [
                 'status' => true,
                 'message' => 'Berhasil mendapatkan data Medical Records',
-                'data' => MedicalRecordResource::collection($medicalRecords),
+                'data' => new MedicalRecordResource($medicalRecord),
             ],
             200,
         );
