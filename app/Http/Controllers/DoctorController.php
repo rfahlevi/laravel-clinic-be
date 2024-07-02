@@ -52,7 +52,7 @@ class DoctorController extends Controller
             'phone' => 'numeric',
             'photo' => 'image|mimes:jpeg,jpg,png,svg|max:2048',
             'email' => 'required|email',
-            'address' => 'required',
+            'address' => 'nullable',
         ];
 
         $messages = [
